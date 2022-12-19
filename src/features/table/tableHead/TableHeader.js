@@ -1,8 +1,9 @@
 import React from 'react';
-import TableCell from '@mui/material/TableCell';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
+import { styled } from '@mui/material/styles';
 
 export default function TableHeader(props) {
     const {valueToOrderBy, orderDirection, handleSort} = props
@@ -11,12 +12,19 @@ export default function TableHeader(props) {
         handleSort(event, property)
     }
 
+    const StyledTableCell = styled(TableCell)(({ theme }) => ({
+        [`&.${tableCellClasses.head}`]: {
+          backgroundColor: theme.palette.secondary.light,
+          color: theme.palette.common.white,
+        }
+    }))
+
     return (
         <TableHead>
             <TableRow>
-                <TableCell key="image">
-                </TableCell>
-                <TableCell key="name.first">
+                <StyledTableCell key="image"  align="center">
+                </StyledTableCell>
+                <StyledTableCell key="name.first"  align="center">
                     <TableSortLabel
                         active={valueToOrderBy === "name.first"}
                         direction={valueToOrderBy === "name.first" ? orderDirection: "asc"}
@@ -24,8 +32,8 @@ export default function TableHeader(props) {
                     >
                         Name
                     </TableSortLabel>
-                </TableCell>
-                <TableCell key="email">
+                </StyledTableCell>
+                <StyledTableCell key="email"  align="center">
                     <TableSortLabel
                         active={valueToOrderBy === "email"}
                         direction={valueToOrderBy === "email" ? orderDirection: "asc"}
@@ -33,8 +41,8 @@ export default function TableHeader(props) {
                     >
                         Email
                     </TableSortLabel>
-                </TableCell>
-                <TableCell key="login.username">
+                </StyledTableCell>
+                <StyledTableCell key="login.username"  align="center">
                     <TableSortLabel
                         active={valueToOrderBy === "login.username"}
                         direction={valueToOrderBy === "login.username" ? orderDirection: "asc"}
@@ -42,8 +50,8 @@ export default function TableHeader(props) {
                     >
                         Username
                     </TableSortLabel>
-                </TableCell>
-                <TableCell key="location.city">
+                </StyledTableCell>
+                <StyledTableCell key="location.city"  align="center">
                     <TableSortLabel
                         active={valueToOrderBy === "location.city"}
                         direction={valueToOrderBy === "location.city" ? orderDirection: "asc"}
@@ -51,7 +59,7 @@ export default function TableHeader(props) {
                     >
                         Location
                     </TableSortLabel>
-                </TableCell>
+                </StyledTableCell>
             </TableRow>
         </TableHead>
     )

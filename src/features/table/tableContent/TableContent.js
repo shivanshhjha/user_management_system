@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import TableHeader from '../tableHead/TableHeader';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { styled } from '@mui/material/styles';
 
 function descendingComparator(a, b, orderBy) {
     if(orderBy.search('.') !== -1) {
@@ -45,6 +46,22 @@ const sortedRow = (rowArray, value, comparator) => {
     return stabilizedRowArray.map((el) => el[0])
 }
 
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.body}`]: {
+        fontSize: 14,
+    }
+}))
+  
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+      border: 0,
+    }
+  }))
+
 export default function TableContent({users}) {
     const [orderDirection, setOrderDirection] = useState("asc")
     const [valueToOrderBy, setValueToOrderBy] = useState("")
@@ -67,8 +84,8 @@ export default function TableContent({users}) {
     }
 
     return (
-        <Paper sx={{ width: '100%', mb: 2 }}>
-            <TableContainer>
+        <>
+            <TableContainer component={Paper} sx={{ width: "95%", mx: "auto" }}>
                 <Table>
                     <TableHeader
                         valueToOrderBy={valueToOrderBy}
@@ -80,23 +97,23 @@ export default function TableContent({users}) {
                         sortedRow(users, valueToOrderBy, getComparator(orderDirection, valueToOrderBy))
                             .slice(page*rowsPerPage, (page+1)*rowsPerPage)
                             .map(user => (
-                                <TableRow key={user.login.uuid}>
-                                    <TableCell>
+                                <StyledTableRow key={user.login.uuid}>
+                                    <StyledTableCell align="center">
                                         <img src={user.picture.thumbnail} alt="" />
-                                    </TableCell>
-                                    <TableCell>
-                                        {user.name.title} {user.name.first} {user.name.last}
-                                    </TableCell>
-                                    <TableCell>
+                                    </StyledTableCell>
+                                    <StyledTableCell align="center">
+                                        {user.name.first} {user.name.last}
+                                    </StyledTableCell>
+                                    <StyledTableCell align="center">
                                         {user.email}
-                                    </TableCell>
-                                    <TableCell>
+                                    </StyledTableCell>
+                                    <StyledTableCell align="center">
                                         {user.login.username}
-                                    </TableCell>
-                                    <TableCell>
+                                    </StyledTableCell>
+                                    <StyledTableCell align="center">
                                         {user.location.city}, {user.location.country}
-                                    </TableCell>
-                                </TableRow>
+                                    </StyledTableCell>
+                                </StyledTableRow>
                             ))
                     }
                     </TableBody>
@@ -111,6 +128,6 @@ export default function TableContent({users}) {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
-        </Paper>
+        </>
     )
 }
